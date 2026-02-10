@@ -15,7 +15,7 @@ body {
   color: white;
   text-align: center;
   margin: 0;
-  padding: 0;
+  /* padding: 0; */
 }
 
 h1 {
@@ -23,32 +23,42 @@ h1 {
 }
 
 #gameArea {
-  width: 700px;
-  height: 450px;
+  width: 900px;
+  height: 600px;
   margin: 30px auto;
   position: relative;
   background: #020617;
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(255,255,255,0.08);
+  overflow: hidden;
 }
 
 /* Snap target grid (invisible boxes) */
-.target {
+/* .target {
   width: 140px;
   height: 140px;
   position: absolute;
   border: 2px dashed rgba(255,255,255,0.15);
   border-radius: 12px;
-}
+} */
 
 /* Final snap layout positions */
-#t1 { left: 240px; top: 80px; }
+/* #t1 { left: 240px; top: 80px; }
 #t2 { left: 380px; top: 80px; }
 #t3 { left: 240px; top: 220px; }
-#t4 { left: 380px; top: 220px; }
+#t4 { left: 380px; top: 220px; } */
+
+#guide {
+position: absolute;
+width: 420px;
+left: 240px;
+top: 90px;
+opacity: 0.15;
+pointer-events: none;
+}
 
 /* Draggable pieces */
-.piece {
+/* .piece {
   width: 140px;
   height: 140px;
   position: absolute;
@@ -57,6 +67,20 @@ h1 {
   touch-action: none;
   box-shadow: 0 10px 20px rgba(0,0,0,0.5);
   user-select: none;
+} */
+
+.piece {
+position: absolute;
+width: 260px; /* adjust per piece */
+cursor: grab;
+touch-action: none;
+user-select: none;
+transition: filter 0.2s;
+}
+
+.piece.locked {
+filter: drop-shadow(0 0 12px cyan);
+pointer-events: none;
 }
 
 /* Demo colors (replace with your logo pieces later) */
@@ -65,7 +89,7 @@ h1 {
 #p3 { background: #ef4444; left: 530px; top: 60px; }
 #p4 { background: #6366f1; left: 530px; top: 220px; } */
 
-#p1 {
+/* #p1 {
   background: url('images/2.png');
   background-size: cover;
 }
@@ -80,7 +104,7 @@ h1 {
 #p4 {
   background: url('images/5.png');
   background-size: cover;
-}
+} */
 
 #launchScreen {
   position: fixed;
@@ -91,10 +115,10 @@ h1 {
   justify-content: center;
   flex-direction: column;
   font-size: 42px;
-  animation: fadeIn 1s ease forwards;
+  /* animation: fadeIn 1s ease forwards; */
 }
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9);} 
   to { opacity: 1; transform: scale(1);} 
 }
@@ -111,112 +135,129 @@ h1 {
 #hint {
   opacity: 0.7;
   font-size: 14px;
-}
+} */
 
 </style>
 </head>
 
 <body>
 
-<h1>Drag & Combine to Launch Event</h1>
-<div id="hint">Drag all 4 pieces into the center grid</div>
+<h1>Drag Pieces to Assemble the Logo</h1>
+
 
 <div id="gameArea">
-  <!-- Snap Targets -->
-  <div class="target" id="t1"></div>
-  <div class="target" id="t2"></div>
-  <div class="target" id="t3"></div>
-  <div class="target" id="t4"></div>
 
-  <!-- Draggable Pieces -->
-  <div class="piece" id="p1" data-target="t1"></div>
-  <div class="piece" id="p2" data-target="t2"></div>
-  <div class="piece" id="p3" data-target="t3"></div>
-  <div class="piece" id="p4" data-target="t4"></div>
+
+<!-- faint full-logo guide (image 1) -->
+<img id="guide" src="images/1.png">
+
+
+<!-- Your split pieces (images 2–5) -->
+<img src="images/2.png" class="piece" id="pRed">
+<img src="images/3.png" class="piece" id="pBlue">
+<img src="images/4.png" class="piece" id="pBottom">
+<img src="images/5.png" class="piece" id="pCenter">
+
+
 </div>
 
-<!-- Launch Reveal Screen -->
 <div id="launchScreen">
-  🚀 EVENT LAUNCHED
-  <div style="font-size:18px;margin-top:10px;opacity:0.8;">Converging Ideas, Accelerating Impacts</div>
+🚀 EVENT LAUNCHED
+<div style="font-size:18px;opacity:0.8;margin-top:10px;">Logo Successfully Combined</div>
 </div>
+
 
 <script>
-let placedCount = 0;
 
-function centerOf(el) {
-  const r = el.getBoundingClientRect();
-  return {
-    x: r.left + r.width/2,
-    y: r.top + r.height/2
-  };
+/* -------------------------
+FINAL SNAP POSITIONS
+These are TOP-LEFT coordinates
+Adjust once to match your logo
+------------------------- */
+
+const targets = {
+pRed: { x: 470, y: 110 },
+pBlue: { x: 150, y: 110 },
+pBottom: { x: 300, y: 300 },
+pCenter: { x: 360, y: 210 }
+};
+
+
+let placed = 0;
+
+
+function near(a,b,range=60){
+return Math.abs(a-b) < range;
 }
 
-function distance(a,b){
-  return Math.hypot(a.x-b.x, a.y-b.y);
+
+function trySnap(el){
+if (el.classList.contains('locked')) return;
+
+
+const id = el.id;
+const t = targets[id];
+
+
+const x = parseFloat(el.dataset.x)||0;
+const y = parseFloat(el.dataset.y)||0;
+
+
+if (near(x,t.x) && near(y,t.y)){
+el.style.transform = `translate(${t.x}px, ${t.y}px)`;
+el.dataset.x = t.x;
+el.dataset.y = t.y;
+el.classList.add('locked');
+placed++;
+if (placed === 4) launch();
+}
 }
 
-function lockPiece(piece) {
-  piece.classList.add('glow');
-  piece.style.pointerEvents = 'none';
-  piece.setAttribute('data-locked','1');
-  placedCount++;
-  checkComplete();
+
+function launch(){
+setTimeout(()=>{
+document.getElementById('launchScreen').style.display='flex';
+},600);
 }
 
-function checkSnap(piece) {
-  if (piece.getAttribute('data-locked') === '1') return;
 
-  const targetId = piece.dataset.target;
-  const target = document.getElementById(targetId);
-
-  const d = distance(centerOf(piece), centerOf(target));
-
-  if (d < 40) {
-    const tr = target.getBoundingClientRect();
-    const pr = piece.getBoundingClientRect();
-
-    const dx = tr.left - pr.left;
-    const dy = tr.top - pr.top;
-
-    const x = (parseFloat(piece.getAttribute('data-x'))||0) + dx;
-    const y = (parseFloat(piece.getAttribute('data-y'))||0) + dy;
-
-    piece.style.transform = `translate(${x}px, ${y}px)`;
-    piece.setAttribute('data-x', x);
-    piece.setAttribute('data-y', y);
-
-    lockPiece(piece);
-  }
-}
-
-function checkComplete() {
-  if (placedCount === 4) {
-    setTimeout(()=>{
-      document.getElementById('launchScreen').style.display='flex';
-    }, 700);
-  }
-}
-
+/* free drag anywhere — NOT restricted to boxes */
 interact('.piece').draggable({
-  listeners: {
-    move (event) {
-      const target = event.target;
-      if (target.getAttribute('data-locked') === '1') return;
+listeners: {
+move (event) {
+const el = event.target;
+if (el.classList.contains('locked')) return;
 
-      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-      target.style.transform = `translate(${x}px, ${y}px)`;
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-    },
-    end (event) {
-      checkSnap(event.target);
-    }
-  }
+const x = (parseFloat(el.dataset.x)||0) + event.dx;
+const y = (parseFloat(el.dataset.y)||0) + event.dy;
+
+
+el.style.transform = `translate(${x}px, ${y}px)`;
+el.dataset.x = x;
+el.dataset.y = y;
+},
+end (event) {
+trySnap(event.target);
+}
+}
 });
+
+
+function randomize(){
+document.querySelectorAll('.piece').forEach(el=>{
+const x = Math.random()*600;
+const y = Math.random()*400;
+el.style.transform = `translate(${x}px, ${y}px)`;
+el.dataset.x = x;
+el.dataset.y = y;
+});
+}
+
+
+randomize();
 </script>
+
 
 </body>
 </html>
