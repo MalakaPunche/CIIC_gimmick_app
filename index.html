@@ -32,20 +32,52 @@ h1 {
   box-shadow: 0 0 30px rgba(255,255,255,0.1);
 }
 
-/* Snap target grid (invisible boxes) */
+/* Snap target grid with guide images */
 .target {
   width: 140px;
   height: 140px;
   position: absolute;
   border: 2px dashed rgba(255,255,255,0.15);
   border-radius: 12px;
+  opacity: 0.4;
 }
 
-/* Final snap layout positions */
-#t1 { left: 240px; top: 80px; }
-#t2 { left: 380px; top: 80px; }
-#t3 { left: 240px; top: 220px; }
-#t4 { left: 380px; top: 220px; }
+#t1 {
+  left: 240px;
+  top: 80px;
+  background-image: url('images/1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t2 {
+  left: 380px;
+  top: 80px;
+  background-image: url('images/2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t3 {
+  left: 240px;
+  top: 220px;
+  background-image: url('images/3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t4 {
+  left: 380px;
+  top: 220px;
+  background-image: url('images/4.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 
 /* Draggable pieces */
 .piece {
@@ -59,11 +91,39 @@ h1 {
   user-select: none;
 }
 
-/* Demo colors (replace with your logo pieces later) */
-#p1 { background: #38bdf8; left: 30px; top: 60px; }
-#p2 { background: #fb923c; left: 30px; top: 220px; }
-#p3 { background: #ef4444; left: 530px; top: 60px; }
-#p4 { background: #6366f1; left: 530px; top: 220px; }
+/* Logo pieces using images */
+#p1 { 
+  background-image: url('images/1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 30px; 
+  top: 60px; 
+}
+#p2 { 
+  background-image: url('images/2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 30px; 
+  top: 220px; 
+}
+#p3 { 
+  background-image: url('images/3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 530px; 
+  top: 60px; 
+}
+#p4 { 
+  background-image: url('images/4.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 530px; 
+  top: 220px; 
+}
 
 #launchScreen {
   position: fixed;
@@ -120,7 +180,8 @@ h1 {
 
 <!-- Launch Reveal Screen -->
 <div id="launchScreen">
-  🚀 EVENT LAUNCHED
+  <img src="images/full_logo.png" alt="Complete Logo" style="max-width: 400px; max-height: 400px; margin-bottom: 20px;">
+  <div style="font-size:32px;margin-top:10px;">🚀 EVENT LAUNCHED</div>
   <div style="font-size:18px;margin-top:10px;opacity:0.8;">Converging Ideas, Accelerating Impacts</div>
 </div>
 
