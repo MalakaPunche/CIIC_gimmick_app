@@ -1,0 +1,153 @@
+/* CIIC 2026 – Puzzle game styles */
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+#gameArea {
+  width: 700px;
+  height: 700px;
+  margin: 30px auto;
+  position: relative;
+  background: #020617;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255,255,255,0.1);
+}
+
+/* Snap target grid with guide images */
+.target {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  border: 2px dashed rgba(255,255,255,0.15);
+  border-radius: 12px;
+  opacity: 0.4;
+}
+
+#t1 {
+  left: 140px;
+  top: 150px;
+  background-image: url('../images/1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t0 {
+  left: 280px;
+  top: 150px;
+  /* Empty target box - no background image */
+}
+
+#t2 {
+  left: 420px;
+  top: 150px;
+  background-image: url('../images/2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t3 {
+  left: 280px;
+  top: 290px;
+  background-image: url('../images/3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#t4 {
+  left: 280px;
+  top: 430px;
+  background-image: url('../images/4.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Draggable pieces */
+.piece {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  user-select: none;
+}
+
+/* Logo pieces using images */
+#p1 {
+  background-image: url('../images/1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 30px;
+  top: 60px;
+}
+#p2 {
+  background-image: url('../images/2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 30px;
+  top: 220px;
+}
+#p3 {
+  background-image: url('../images/3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 530px;
+  top: 60px;
+}
+#p4 {
+  background-image: url('../images/4.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 530px;
+  top: 220px;
+}
+
+#launchScreen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #1e293b, #020617);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 42px;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.glow {
+  animation: glowPulse 1.2s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { box-shadow: 0 0 10px white; }
+  to { box-shadow: 0 0 30px cyan; }
+}
+
+#hint {
+  opacity: 0.7;
+  font-size: 14px;
+}
