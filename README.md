@@ -33,21 +33,13 @@ https://malakapunche.github.io/CIIC_gimmick_app/
 4. **Lock**: Once snapped, the piece locks in position with a glowing animation
 5. **Complete**: When all 4 pieces are correctly placed, the launch screen appears after a brief delay
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack Used
 
 - **HTML5**: Structure and markup
 - **CSS3**: Styling, animations, and responsive design
 - **JavaScript**: Game logic and interactivity
 - **Interact.js**: Drag and drop functionality library (loaded via CDN)
 
-
-
-### Changing Snap Sensitivity
-
-Adjust the snap distance threshold in the `checkSnap()` function:
-```javascript
-if (d < 40) {  // Change 40 to adjust snap distance
-```
 
 ## 📝 Game Logic
 
@@ -56,14 +48,6 @@ if (d < 40) {  // Change 40 to adjust snap distance
 - **Locking Mechanism**: Once snapped, pieces are locked with `data-locked="1"` to prevent further movement
 - **Completion Check**: Tracks `placedCount` and triggers launch screen when all 4 pieces are placed
 
-
-## 📄 License
-
-This project is provided as-is for event use.
-
-## 🤝 Contributing
-
-Feel free to customize and adapt this project for your own events!
 
 ---
 
